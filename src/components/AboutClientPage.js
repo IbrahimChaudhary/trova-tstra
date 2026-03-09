@@ -70,6 +70,7 @@ const AboutClientPage = () => {
       );
       createdTriggers.push(anim.scrollTrigger);
     };
+    
     createScrollTriggerAnimation(philosophyRef.current);
     createScrollTriggerAnimation(missionRef.current);
     createScrollTriggerAnimation(coreValuesRef.current);
