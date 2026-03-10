@@ -27,7 +27,6 @@ const OverseasInfo = [
     value: "+63 323540955",
   },
 ];
-
 const CompanyClientPage = () => {
   return (
     <div className="relative z-10 flex flex-col items-center justify-center text-white">
