@@ -29,6 +29,28 @@ const ForestComponent = () => {
 
   useGSAP(
     () => {
+      // Initialize animation variables
+      let tl = null;
+      let sunAnimation = null;
+      let bearAnimation = null;
+      let textAnimation = null;
+      let clouds = [];
+
+      // Check if all refs are initialized
+      if (
+        !containerRef.current ||
+        !sunsetRef.current ||
+        !leftBackgroundRef.current ||
+        !leftForegroundRef.current ||
+        !rightBackgroundRef.current ||
+        !rightForegroundRef.current ||
+        !sunRef.current ||
+        !bearRef.current ||
+        !textBlockRef.current
+      ) {
+        return () => {}; // Return empty cleanup function
+      }
+
       // Initial setup
       gsap.set(sunsetRef.current, { opacity: 0 });
       gsap.set([leftBackgroundRef.current, leftForegroundRef.current], {
@@ -41,7 +63,7 @@ const ForestComponent = () => {
       gsap.set(bearRef.current, { y: 150 });
       gsap.set(textBlockRef.current, { y: 0, opacity: 1 });
 
-      const clouds = gsap.utils.toArray(".cloud", containerRef.current);
+      clouds = gsap.utils.toArray(".cloud", containerRef.current);
       const width = typeof window !== "undefined" ? window.innerWidth : 1920;
       clouds.forEach((cloud, i) => {
         const startX = -50 - i * 50;
@@ -65,7 +87,7 @@ const ForestComponent = () => {
       });
 
       // Main animations
-      const tl = gsap.timeline({
+      tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top bottom",
@@ -85,7 +107,7 @@ const ForestComponent = () => {
         0
       );
 
-      const sunAnimation = gsap.to(sunRef.current, {
+      sunAnimation = gsap.to(sunRef.current, {
         y: -200,
         x: -90,
         scrollTrigger: {
@@ -96,7 +118,7 @@ const ForestComponent = () => {
         },
       });
 
-      const bearAnimation = gsap.fromTo(
+      bearAnimation = gsap.fromTo(
         bearRef.current,
         { y: 150 },
         {
@@ -111,7 +133,7 @@ const ForestComponent = () => {
         }
       );
 
-      const textAnimation = gsap.to(textBlockRef.current, {
+      textAnimation = gsap.to(textBlockRef.current, {
         y: -200,
         opacity: 0.8,
         scrollTrigger: {

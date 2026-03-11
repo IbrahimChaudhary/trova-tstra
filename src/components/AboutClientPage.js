@@ -5,7 +5,9 @@ import dynamic from "next/dynamic";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 // Use next/dynamic for the ForestComponent
 const ForestComponent = dynamic(() => import("./ForestComponent"), {
@@ -53,6 +55,8 @@ const AboutClientPage = () => {
       duration = 1.2,
       startTrigger = "top 85%"
     ) => {
+      if (!ref) return;
+
       const anim = gsap.fromTo(
         ref,
         { autoAlpha: 0, y: yFrom },
@@ -70,11 +74,11 @@ const AboutClientPage = () => {
       );
       createdTriggers.push(anim.scrollTrigger);
     };
-    
-    createScrollTriggerAnimation(philosophyRef.current);
-    createScrollTriggerAnimation(missionRef.current);
-    createScrollTriggerAnimation(coreValuesRef.current);
-    createScrollTriggerAnimation(forestRef.current);
+
+    if (philosophyRef.current) createScrollTriggerAnimation(philosophyRef.current);
+    if (missionRef.current) createScrollTriggerAnimation(missionRef.current);
+    if (coreValuesRef.current) createScrollTriggerAnimation(coreValuesRef.current);
+    if (forestRef.current) createScrollTriggerAnimation(forestRef.current);
 
     philosophyParagraphs.current.forEach((p) => {
       createScrollTriggerAnimation(p, 30, 1, "top 90%");

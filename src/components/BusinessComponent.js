@@ -13,6 +13,12 @@ const BusinessComponent = () => {
 
   useGSAP(
     () => {
+      let tl = null;
+
+      if (!containerRef.current || !ourRef.current || !businessRef.current) {
+        return () => {};
+      }
+
       gsap.registerPlugin(ScrollTrigger);
 
       gsap.set(ourRef.current.children, {
@@ -29,7 +35,7 @@ const BusinessComponent = () => {
         scale: 0.5,
       });
 
-      const tl = gsap.timeline({
+      tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top 80%",
@@ -59,10 +65,12 @@ const BusinessComponent = () => {
 
       // Cleanup function
       return () => {
-        if (tl.scrollTrigger) {
+        if (tl && tl.scrollTrigger) {
           tl.scrollTrigger.kill();
         }
-        tl.kill();
+        if (tl) {
+          tl.kill();
+        }
       };
     },
     { scope: containerRef }

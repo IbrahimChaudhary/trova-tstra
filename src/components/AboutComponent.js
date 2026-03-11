@@ -27,6 +27,22 @@ const AboutComponent = () => {
 
   useGSAP(
     () => {
+      let masterTl = null;
+
+      if (
+        !containerRef.current ||
+        !ourRef.current ||
+        !NameRef.current ||
+        !backgroundRef.current ||
+        !buttonRef.current ||
+        !svgContainerRef.current ||
+        !mainSvgRef.current ||
+        !nextTextRef.current ||
+        !gradientRef.current
+      ) {
+        return () => {};
+      }
+
       gsap.registerPlugin(ScrollTrigger);
 
       gsap.set([ourRef.current.children, NameRef.current.children], {
@@ -53,7 +69,7 @@ const AboutComponent = () => {
         }
       );
 
-      const masterTl = gsap.timeline({
+      masterTl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
@@ -130,10 +146,12 @@ const AboutComponent = () => {
       masterTl.to(gradientRef.current, { opacity: 1, ease: "power2.out" }, "<");
       // Cleanup function
       return () => {
-        if (masterTl.scrollTrigger) {
+        if (masterTl && masterTl.scrollTrigger) {
           masterTl.scrollTrigger.kill();
         }
-        masterTl.kill();
+        if (masterTl) {
+          masterTl.kill();
+        }
       };
     },
     { scope: containerRef }

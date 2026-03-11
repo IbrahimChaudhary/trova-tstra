@@ -22,6 +22,22 @@ export default function SunsetScene() {
 
   useGSAP(
     () => {
+      if (
+        !containerRef.current ||
+        !backgroundRef.current ||
+        !mountain1Ref.current ||
+        !mountain2Ref.current ||
+        !mountain3Ref.current ||
+        !landscapeRef.current ||
+        !bigBearRef.current ||
+        !smallBearsRef.current ||
+        !flagRef.current ||
+        !sun.current ||
+        !textContainerRef.current
+      ) {
+        return () => {};
+      }
+
       gsap.registerPlugin(ScrollTrigger);
 
       const mm = gsap.matchMedia();
@@ -33,6 +49,7 @@ export default function SunsetScene() {
         },
         (context) => {
           const { isDesktop } = context.conditions;
+          let tl = null;
 
           if (isDesktop) {
             gsap.set(flagRef.current, { y: "10%" });
@@ -42,7 +59,7 @@ export default function SunsetScene() {
 
             const flagYOffset = -landscapeRef.current.offsetHeight * 0.2;
 
-            const tl = gsap.timeline({
+            tl = gsap.timeline({
               scrollTrigger: {
                 trigger: containerRef.current,
                 start: "top top",
@@ -154,7 +171,7 @@ export default function SunsetScene() {
           }
           // Cleanup function
           return () => {
-            if (context.conditions.isDesktop) {
+            if (context.conditions.isDesktop && tl) {
               // Kill all ScrollTriggers created by the timeline
               if (tl.scrollTrigger) {
                 tl.scrollTrigger.kill();
