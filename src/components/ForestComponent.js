@@ -124,34 +124,44 @@ const ForestComponent = () => {
       // Cleanup function
       return () => {
         // Kill the timeline and its ScrollTrigger
-        if (tl.scrollTrigger) {
-          tl.scrollTrigger.kill();
+        if (tl) {
+          if (tl.scrollTrigger) {
+            tl.scrollTrigger.kill();
+          }
+          tl.kill();
         }
-        tl.kill();
 
         // Kill other animations and their ScrollTriggers
-        if (sunAnimation.scrollTrigger) {
-          sunAnimation.scrollTrigger.kill();
+        if (sunAnimation) {
+          if (sunAnimation.scrollTrigger) {
+            sunAnimation.scrollTrigger.kill();
+          }
+          sunAnimation.kill();
         }
-        sunAnimation.kill();
 
-        if (bearAnimation.scrollTrigger) {
-          bearAnimation.scrollTrigger.kill();
+        if (bearAnimation) {
+          if (bearAnimation.scrollTrigger) {
+            bearAnimation.scrollTrigger.kill();
+          }
+          bearAnimation.kill();
         }
-        bearAnimation.kill();
 
-        if (textAnimation.scrollTrigger) {
-          textAnimation.scrollTrigger.kill();
+        if (textAnimation) {
+          if (textAnimation.scrollTrigger) {
+            textAnimation.scrollTrigger.kill();
+          }
+          textAnimation.kill();
         }
-        textAnimation.kill();
 
         // Kill cloud animations
-        ScrollTrigger.getAll().forEach((trigger) => {
-          if (clouds.some((cloud) => trigger.trigger === cloud.parentElement)) {
-            trigger.kill();
-          }
-        });
-        clouds.forEach((cloud) => gsap.killTweensOf(cloud));
+        if (clouds && clouds.length > 0) {
+          ScrollTrigger.getAll().forEach((trigger) => {
+            if (clouds.some((cloud) => trigger.trigger === cloud.parentElement)) {
+              trigger.kill();
+            }
+          });
+          clouds.forEach((cloud) => gsap.killTweensOf(cloud));
+        }
       };
     },
     { scope: containerRef }
